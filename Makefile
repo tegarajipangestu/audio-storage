@@ -9,6 +9,10 @@ docker.up:
 docker.down:
 	docker-compose -f docker-compose.yml -p audio-storage down
 
+.PHONY: postgres.login
+postgres.login:
+	docker-compose exec postgres psql "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:${POSTGRES_PORT}/${POSTGRES_DB_NAME}"
+
 .PHONY: migrate.dep
 migrate.dep:
 ifeq ($(shell uname), Linux)
