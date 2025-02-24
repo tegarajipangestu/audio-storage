@@ -1,6 +1,6 @@
 # audio-storage
 
-audio-storage is a backend service for uploading, storing, converting, and retrieving audio files. It utilizes MinIO (S3-compatible storage) to store audio files and PostgreSQL to manage metadata. Files are converted to `.m4a` (AAC) upon upload and can be retrieved in different formats.
+audio-storage is a backend service for uploading, storing, converting, and retrieving audio files. It utilizes MinIO (S3-compatible storage) to store audio files and PostgreSQL to manage metadata. Files are converted to `.m4a` upon upload and can be retrieved in different formats.
 
 ## Features
 
@@ -44,7 +44,8 @@ To access PostgreSQL served by Docker Compose:
 make postgres.login
 ```
 
-To access MinIO web UI, just open http://localhost:9001 in browser
+To access MinIO web UI, just open http://localhost:9001 in browser. For login, use the value of `MINIO_ROOT_USER` and `MINIO_ROOT_PASSWORD` defined in docker-compose.yml file (
+defaults to `minioadmin:minioadmin`)
 
 ## Stopping the Service
 
