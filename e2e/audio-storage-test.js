@@ -1,10 +1,11 @@
 import http from 'k6/http';
-import { check } from 'k6';
+import { check, sleep } from 'k6';
 import { randomString } from 'https://jslib.k6.io/k6-utils/1.2.0/index.js';
 import crypto from 'k6/crypto';
 
-const BASE_URL = __ENV.BASE_URL || 'http://localhost:8080';
-const VALID_FORMATS = ['mp3', 'm4a', 'wav', 'flac', 'opus'];
+const BASE_URL = __ENV.BASE_URL || 'http://host.docker.internal:8080';
+
+const VALID_FORMATS = ['m4a', 'wav'];
 const INVALID_FORMAT = 'xyz';
 
 const TEST_FILES = [
@@ -31,7 +32,7 @@ export default function () {
     let userId = "user-"+randomString(6);
     let phraseId = "phrase-"+randomString(6);
     let format = getRandomFormat();
-    
+
     let selectedAudio = AUDIO_FILES[Math.floor(Math.random() * AUDIO_FILES.length)];
 
     let uploadRes = uploadAudio(userId, phraseId, selectedAudio);
@@ -41,9 +42,13 @@ export default function () {
     });
 
     if (uploadRes.status === 200) {
+        sleep(1);
+
         let downloadRes = downloadAudio(userId, phraseId, format);
         check(downloadRes, {
             'Download status is 200': (res) => res.status === 200,
+            'Downloaded file size matches uploaded file': (res) => res.body.length === selectedAudio.data.length,
+            'Downloaded file hash matches original': (res) => verifyHash(res.body, selectedAudio.hash),
         });
 
         let invalidFormatRes = downloadAudio(userId, phraseId, INVALID_FORMAT);

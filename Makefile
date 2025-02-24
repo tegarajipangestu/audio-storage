@@ -1,17 +1,26 @@
 #!make
 -include .env
 
-.PHONY: docker.up
-docker.up:
+.PHONY: docker.build
+docker.build:
+	docker build -t audio-storage .
+
+.PHONY: docker-compose.up
+docker-compose.up:
 	docker-compose --env-file .env -f docker-compose.yml -p audio-storage up -d --build
 
-.PHONY: docker.down
-docker.down:
+.PHONY: docker-compose.down
+docker-compose.down:
 	docker-compose -f docker-compose.yml -p audio-storage down
 
 .PHONY: postgres.login
 postgres.login:
 	docker-compose exec postgres psql "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:${POSTGRES_PORT}/${POSTGRES_DB_NAME}"
+
+.PHONY: test
+test:
+	chmod +x e2e/audio-storage-test.sh
+	./e2e/audio-storage-test.sh
 
 .PHONY: k6-test
 k6-test:
