@@ -3,7 +3,7 @@
 
 .PHONY: docker.up
 docker.up:
-	docker-compose --env-file .env -f docker-compose.yml -p audio-storage up
+	docker-compose --env-file .env -f docker-compose.yml -p audio-storage up -d --build
 
 .PHONY: docker.down
 docker.down:
@@ -12,6 +12,14 @@ docker.down:
 .PHONY: postgres.login
 postgres.login:
 	docker-compose exec postgres psql "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:${POSTGRES_PORT}/${POSTGRES_DB_NAME}"
+
+.PHONY: k6-test
+k6-test:
+	docker run --rm -i \
+		-v $(shell pwd)/e2e/audio-storage-test.js:/audio-storage-test.js \
+		-v $(shell pwd)/e2e/testdata:/testdata \
+		-e BASE_URL="http://host.docker.internal:8080" \
+		grafana/k6 run /audio-storage-test.js
 
 .PHONY: migrate.dep
 migrate.dep:

@@ -113,7 +113,7 @@ func (handler *AudioStorageHandler) DownloadAndConvertAudio(c *gin.Context) {
 	convertedFilePath := filepath.Join(handler.cfg.TempDir, phraseID+"."+format)
 	err = convertAudio(tempDownloadPath, convertedFilePath)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to convert audio format"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to convert audio format"})
 		return
 	}
 
