@@ -42,7 +42,7 @@ func NewConfig(env string) (*Config, error) {
 
 	var config Config
 	if err := envdecode.Decode(&config); err != nil {
-		return nil, errors.Wrap(err, "[NewServerConfig] error decoding env")
+		return nil, errors.Wrap(err, "[NewConfig] error decoding env")
 	}
 
 	return &config, nil

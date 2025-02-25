@@ -154,3 +154,6 @@ This will:
 ### Enable Resumable Uploads
 - Implement multipart uploads (via TUS protocol or S3 multipart upload) to allow large files to resume uploading after failure.
 - Parallel chunk uploads for speed improvements.
+### Add Support for Chunked Downloads
+- Implement supports for `Range` request header and making sure the storage supports partial object retrieval
+- Send appropriate `Content-Range` and `Accept-Ranges` response headers so the client understands that partial downloads are supported.
