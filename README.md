@@ -44,8 +44,7 @@ To access PostgreSQL served by Docker Compose:
 make postgres.login
 ```
 
-To access MinIO web UI, just open http://localhost:9001 in browser. For login, use the value of `MINIO_ROOT_USER` and `MINIO_ROOT_PASSWORD` defined in docker-compose.yml file (
-defaults to `minioadmin:minioadmin`)
+To access MinIO web UI, just open http://localhost:9001 in browser. For login, use the value of `MINIO_ROOT_USER` and `MINIO_ROOT_PASSWORD` defined in docker-compose.yml file (defaults to `minioadmin:minioadmin`)
 
 ## Stopping the Service
 
@@ -126,6 +125,7 @@ This will:
 - Upload all audio file from e2e/testdata folder
 - Download all files in a m4a and wav format in e2e/_downloaded folder
 
+Then, you can manually checks for the integrity and quality of downloaded audio files in e2e/_downloaded folder
 
 ### Running End to End Test using K6
 
